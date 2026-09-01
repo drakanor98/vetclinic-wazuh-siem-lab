@@ -106,19 +106,19 @@ These figures represent scanner findings, not proof that every issue is exploita
 
 The Wazuh Security Configuration Assessment module evaluated the endpoint against the CIS Microsoft Windows 11 Enterprise Benchmark. The initial assessment showed substantial hardening gaps, supporting a phased remediation plan focused on endpoint policy, access control, audit settings, and attack-surface reduction.
 
-When captured, add `screenshots/06-security-configuration-assessment.png` here.
+![Security Configuration Assessment](screenshots/06-security-configuration-assessment.png)
 
 ### 6. Windows security telemetry
 
 Windows Defender scan events were reviewed in Threat Hunting to verify that endpoint security activity reached the SIEM and could be investigated by agent, description, severity, and rule ID.
 
-When captured, add `screenshots/07-windows-defender-event.png` here.
+![Windows Defender event](screenshots/07-windows-defender-event.png)
 
 ### 7. MITRE ATT&CK mapping
 
 The custom detection is mapped to **T1565.001: Stored Data Manipulation**, representing unauthorised changes to stored information. In a real veterinary environment, monitoring sensitive clinical or administrative records can help identify tampering, destructive activity, or misuse of privileged access.
 
-When captured, add `screenshots/08-mitre-mapping-custom-alert.png` here.
+![MITRE ATT&CK mapping](screenshots/08-mitre-mapping-custom-alert.png)
 
 ## Key findings
 
