@@ -1,0 +1,10 @@
+<group name="syscheck,vetclinic,fim,windows,">
+  <rule id="100100" level="12">
+    <if_sid>550</if_sid>
+    <field name="file">readme.txt</field>
+    <description>Potential unauthorized modification of VetClinic patient record: $(file)</description>
+    <mitre>
+      <id>T1565.001</id>
+    </mitre>
+  </rule>
+</group>

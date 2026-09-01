@@ -1,0 +1,17 @@
+# Credentials and private material
+*.key
+*.pem
+*.pfx
+*.p12
+*.env
+credentials*
+passwords*
+
+# Local and temporary files
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.tmp
+*.log
+*.backup
+
