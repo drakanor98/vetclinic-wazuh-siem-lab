@@ -161,13 +161,20 @@ Detailed analysis is available in [`docs/findings-and-remediation.md`](docs/find
 ```text
 .
 ├── README.md
-├── START-HERE.md
 ├── docs/
 │   ├── findings-and-remediation.md
 │   └── lab-build-notes.md
 ├── rules/
 │   └── vetclinic_rules.xml
 └── screenshots/
+    ├── 01-wazuh-dashboard-overview.png
+    ├── 02-windows-agent-details.png
+    ├── 03-fim-file-change-detected.png
+    ├── 04-custom-patient-record-alert.png
+    ├── 05-vulnerability-detection.png
+    ├── 06-security-configuration-assessment.png
+    ├── 07-windows-defender-event.png
+    └── 08-mitre-mapping-custom-alert.png
 ```
 
 ## Limitations and future improvements
