@@ -21,7 +21,7 @@ All activity was performed on an authorised personal lab. No production patient 
 - Engineer and validate a custom high-severity detection rule.
 - Map the detection to MITRE ATT&CK.
 - Review vulnerability and CIS configuration-assessment findings.
-- Document evidence, security implications, and remediation priorities.
+- Document evidence, security implications and remediation priorities.
 
 ## Architecture
 
@@ -53,7 +53,7 @@ The Ubuntu VM receives a private DHCP address from Hyper-V's Default Switch. Tha
 
 ### 1. Wazuh deployment and endpoint enrolment
 
-The Wazuh manager, indexer, dashboard, and Filebeat services were deployed on the Ubuntu VM. The Windows Wazuh agent was installed, pointed to the manager, and verified as active.
+The Wazuh manager, indexer, dashboard, and Filebeat services were deployed on the Ubuntu VM. The Windows Wazuh agent was installed, pointed to the manager and verified as active.
 
 ![Wazuh dashboard overview](screenshots/01-wazuh-dashboard-overview.png)
 
@@ -92,19 +92,29 @@ The rule was validated with `wazuh-analysisd -t`, the manager was restarted, and
 
 ![Custom patient-record alert](screenshots/04-custom-patient-record-alert.png)
 
-The complete rule is available at [`rules/vetclinic_rules.xml`](rules/vetclinic_rules.xml).
+#### Detection engineering analysis
+
+**Detection logic:** Rule `100100` inherits from Wazuh FIM rule `550` and escalates modifications involving the simulated patient-record file to severity level 12.
+
+**Security rationale:** Unexpected modification of stored clinical records can indicate account misuse, malicious tampering, ransomware activity or unauthorised administrative changes.
+
+**Expected false positives:** Approved record updates, authorised maintenance, application-generated changes and controlled security testing may trigger the detection.
+
+**Analyst triage:** Confirm the endpoint, affected path, timestamp and change authorisation; identify the associated user or process; review nearby authentication, PowerShell and Defender events; then determine whether containment or escalation is required.
+
+**Tuning approach:** In a production environment, the rule should be scoped to specific sensitive directories and supported by an approved-change process to reduce unnecessary alerts without weakening monitoring coverage.
 
 ### 4. Vulnerability management
 
-Wazuh identified **721 findings** across the Windows endpoint during the documented scan: 9 critical, 468 high, 230 medium, and 14 low. Affected components included the Windows operating system, Mozilla Firefox, 7-Zip, Node.js, and Python.
+Wazuh identified **721 findings** across the Windows endpoint during the documented scan: 9 critical, 468 high, 230 medium, and 14 low. Affected components included the Windows operating system, Mozilla Firefox, 7-Zip, Node.js and Python.
 
-These figures represent scanner findings, not proof that every issue is exploitable. Remediation should account for CVE validation, patch availability, exposure, asset criticality, and operational impact.
+These figures represent scanner findings, not proof that every issue is exploitable. Remediation should account for CVE validation, patch availability, exposure, asset criticality and operational impact.
 
 ![Vulnerability detection dashboard](screenshots/05-vulnerability-detection.png)
 
 ### 5. Security configuration assessment
 
-The Wazuh Security Configuration Assessment module evaluated the endpoint against the CIS Microsoft Windows 11 Enterprise Benchmark. The initial assessment showed substantial hardening gaps, supporting a phased remediation plan focused on endpoint policy, access control, audit settings, and attack-surface reduction.
+The Wazuh Security Configuration Assessment module evaluated the endpoint against the CIS Microsoft Windows 11 Enterprise Benchmark. The initial assessment showed substantial hardening gaps, supporting a phased remediation plan focused on endpoint policy, access control, audit settings and attack-surface reduction.
 
 ![Security Configuration Assessment](screenshots/06-security-configuration-assessment.png)
 
@@ -132,12 +142,12 @@ The custom detection is mapped to **T1565.001: Stored Data Manipulation**, repre
 
 ## Recommended remediation
 
-1. Validate critical and high findings against the exact installed versions, vendor advisories, and actual endpoint exposure.
+1. Validate critical and high findings against the exact installed versions, vendor advisories and actual endpoint exposure.
 2. Patch the operating system and supported third-party applications, beginning with internet-facing or commonly exploited components.
 3. Remove unsupported or unnecessary software and document approved exceptions.
 4. Apply failed CIS controls in staged groups, testing operational impact before enforcement.
 5. Restrict access to patient-record directories using least privilege and role-based access.
-6. Forward high-severity alerts into an incident-handling workflow and define an owner, triage target, and escalation path.
+6. Forward high-severity alerts into an incident-handling workflow and define an owner, triage target and escalation path.
 7. Establish an approved-change process so authorised maintenance can be distinguished from suspicious modification.
 8. Retest FIM, vulnerability, Defender, and configuration-assessment controls after remediation.
 
@@ -182,8 +192,8 @@ Detailed analysis is available in [`docs/findings-and-remediation.md`](docs/find
 - The lab uses one Windows endpoint and an all-in-one Wazuh server; it does not represent a resilient production cluster.
 - Hyper-V Default Switch addressing is dynamic and is unsuitable for a permanent deployment.
 - Findings require contextual validation before they should be treated as confirmed exploitable vulnerabilities.
-- Future work could add Sysmon telemetry, email or ticketing integration, role-based dashboard access, automated rule testing, and a second endpoint for comparative analysis.
+- Future work could add Sysmon telemetry, email or ticketing integration, role-based dashboard access, automated rule testing and a second endpoint for comparative analysis.
 
 ## Ethical and privacy statement
 
-This project was conducted only on systems owned and authorised by the project creator. The `Patient-Records` directory contains simulated text and no real clinical or personal data. Credentials, private keys, and authentication material are intentionally excluded from this repository.
+This project was conducted only on systems owned and authorised by the project creator. The `Patient-Records` directory contains simulated text and no real clinical or personal data. Credentials, private keys and authentication material are intentionally excluded from this repository.
